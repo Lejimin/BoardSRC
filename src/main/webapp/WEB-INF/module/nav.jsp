@@ -26,7 +26,7 @@
                   <a class="nav-link active  me-5" aria-current="page" href="/Notice/list.do">공지사항</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link  me-5" href="#">자유게시판</a>
+                  <a class="nav-link  me-5" href="/Board/list.do">자유게시판</a>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle  me-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

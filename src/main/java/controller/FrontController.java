@@ -6,6 +6,7 @@ import java.util.Map;
 
 import controller.auth.LoginProcController;
 import controller.auth.LogoutProcController;
+import controller.board.BoardListController;
 import controller.home.HomeForwardingController;
 import controller.member.MemberDeleteController;
 import controller.member.MemberJoinController;
@@ -40,7 +41,7 @@ public class FrontController extends HttpServlet{
 		list.put("/Home.do", new HomeForwardingController());
 		
 		//Board관련 URL
-		   
+		list.put("/Board/list.do", new BoardListController());
 		
 		//notice관련 URL
 		list.put("/Notice/list.do", new NoticeListController());
