@@ -99,17 +99,26 @@
 	
 </table>
 
-<!--페이징처리/글쓰기&처음으로 버튼  -->
-<%
-	int pageStart=(nowBlock-1)*pagePerBlock + 1;
-	int pageEnd=((pageStart+pagePerBlock)<=totalPage)?(pageStart+pagePerBlock):totalPage+1;
-%>
 
 <!-- x페이지 누를때 그 페이지로 이동 -->
 <script>
 	function paging(page){
 		document.readForm.nowPage.value=page;//현재페이지 폼에 저장
 		var numPerPage=<%=numPerPage%>
+		document.readForm.start.value=(page*numPerPage)-numPerPage;
+		document.readForm.end.value=numPerPage;
+		document.readForm.action="/Board/list.do";
+		document.readForm.submit();
+	}
+	
+	//블럭 다음으로이동 (>>)
+	function moveBlock(value){
+		//alert("블럭: "+value);
+		var numPerPage=<%=numPerPage%>      //10
+		var pagePerBlock=<%=pagePerBlock%>  //15
+		//블럭이동시 표시할 첫번째 nowPage값을 계산해서 readForm에 저장
+		document.readForm.nowPage.value=pagePerBlock*(value-1)+1;
+		var page=pagePerBlock*(value-1)+1;
 		document.readForm.start.value=(page*numPerPage)-numPerPage;
 		document.readForm.end.value=numPerPage;
 		document.readForm.action="/Board/list.do";
@@ -125,6 +134,12 @@
 	<input type="hidden" name="nowPage">
 </form>
 <!-- 페이지관련 정보 전달Form 끝 -->
+
+<!--페이징처리/글쓰기&처음으로 버튼  -->
+<%
+	int pageStart=(nowBlock-1)*pagePerBlock + 1;
+	int pageEnd=((pageStart+pagePerBlock)<=totalPage)?(pageStart+pagePerBlock):totalPage+1;
+%>
 
 <table class="table w-75">
 	<tr>
@@ -142,7 +157,7 @@
   			{
   			%>
     		<li class="page-item">
-      			<a class="page-link" href="#" aria-label="Previous">
+      			<a class="page-link" href="javascript:moveBlock('<%=nowBlock-1 %>')" aria-label="Previous">
         			<span aria-hidden="true">&laquo;</span>
       			</a>
     		</li>
@@ -164,7 +179,7 @@
     		{
     		%>
    			<li class="page-item">
-      			<a class="page-link" href="#" aria-label="Next">
+      			<a class="page-link" href="javascript:moveBlock('<%=nowBlock+1 %>')" aria-label="Next">
        		 		<span aria-hidden="true">&raquo;</span>
      			 </a>
     		</li>
