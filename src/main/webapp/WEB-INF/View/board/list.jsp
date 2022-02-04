@@ -113,7 +113,6 @@
 	
 	//블럭 다음으로이동 (>>)
 	function moveBlock(value){
-		//alert("블럭: "+value);
 		var numPerPage=<%=numPerPage%>      //10
 		var pagePerBlock=<%=pagePerBlock%>  //15
 		//블럭이동시 표시할 첫번째 nowPage값을 계산해서 readForm에 저장
@@ -121,6 +120,14 @@
 		var page=pagePerBlock*(value-1)+1;
 		document.readForm.start.value=(page*numPerPage)-numPerPage;
 		document.readForm.end.value=numPerPage;
+		document.readForm.action="/Board/list.do";
+		document.readForm.submit();
+	}
+	
+	function moveFirst(){
+		document.readForm.nowPage.value=1;
+		document.readForm.start.value=0;
+		document.readForm.end.value=10;
 		document.readForm.action="/Board/list.do";
 		document.readForm.submit();
 	}
@@ -195,7 +202,7 @@
 		<!-- 글쓰기/처음으로 버튼 -->
 		<td align="right">
 			<a href="#" class="btn btn-primary">글쓰기</a>
-			<a href="#" class="btn btn-primary">처음으로</a>
+			<a href="javascript:moveFirst()" class="btn btn-primary">처음으로</a>
 		</td>
 	</tr>
 </table>
