@@ -46,9 +46,9 @@ public class BoardDAO {
 		//게시물 읽어오기(start,end)
 		public Vector<BoardVO> getBoardList(int start, int end){
 			
-			Connection conn;
-			PreparedStatement pstmt;
-			ResultSet rs;
+			Connection conn=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
 
 			Vector<BoardVO> list = new Vector();
 			
@@ -80,6 +80,10 @@ public class BoardDAO {
 				
 			}catch(Exception e) {
 				e.printStackTrace();
+			}finally {
+				try{rs.close();}catch(Exception e) {}
+				try{pstmt.close();}catch(Exception e) {}
+				try{conn.close();}catch(Exception e) {}
 			}
 			//service로 리턴
 			return list;
@@ -90,9 +94,9 @@ public class BoardDAO {
 		//전체 게시물 개수 받아오기()
 		public int getTotalCount(){
 			
-			Connection conn;
-			PreparedStatement pstmt;
-			ResultSet rs;
+			Connection conn=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
 			int cnt=0;
 			try {
 				conn=ds.getConnection();
@@ -107,6 +111,10 @@ public class BoardDAO {
 				
 			}catch(Exception e) {
 				e.printStackTrace();
+			}finally {
+				try{rs.close();}catch(Exception e) {}
+				try{pstmt.close();}catch(Exception e) {}
+				try{conn.close();}catch(Exception e) {}
 			}
 			//service로 리턴
 			return cnt;
