@@ -30,10 +30,10 @@
 
 <%@page import="vo.*" %>
 <%
-	MemberVO vo = (MemberVO)session.getAttribute("vo");
+	MemberVO vo= (MemberVO)session.getAttribute("vo");
 %>
 
-<form mrthod="post" action="/Board/post.do?flag=false">
+<form method="post" action="/Board/post.do?flag=false">
 	<table class="table w-75">
 		<tr>
 			<td>아이디</td>
