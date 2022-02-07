@@ -133,7 +133,7 @@ public class BoardDAO {
 		
 		
 		//게시물 Post
-		public void BoardPost(HttpServletRequest res) {
+		public void BoardPost(HttpServletRequest req) {
 			Connection conn=null;
 			PreparedStatement pstmt = null;
 			int filesize=0;
@@ -143,7 +143,7 @@ public class BoardDAO {
 				
 				
 				//업로드 폴더 생성(미존재시)
-				Session session = req.getSession();
+				HttpSession session = req.getSession();
 				MemberVO vo = (MemberVO)session.getAttribute("vo");
 				String email = vo.getEmail();
 				File updir = new File(SAVEFOLDER+File.separator+email);
