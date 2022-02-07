@@ -17,9 +17,17 @@ import controller.member.MemberUpdateController;
 import controller.notice.NoticeListController;
 import controller.notice.NoticePostController;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+@MultipartConfig(
+		fileSizeThreshold=1024*1024*10,  //10MB
+		maxFileSize=1024*1024*50,		//50MB
+		maxRequestSize=1024*1024*100	//100MB
+		//location="c:/upload"
+		)
 
 public class FrontController extends HttpServlet{
 	

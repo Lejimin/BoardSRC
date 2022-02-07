@@ -1,15 +1,23 @@
 package dao;
 
+import java.io.File;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.UUID;
 import java.util.Vector;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 import vo.BoardVO;
+import vo.MemberVO;
 
 public class BoardDAO {
 
@@ -22,6 +30,8 @@ public class BoardDAO {
 		Connection conn;
 		PreparedStatement pstmt;
 		ResultSet rs;
+		//업로드 경로추가
+		private final String SAVEFOLDER = "c:/upload";
 		
 		//싱글톤 패턴 시작
 		private static BoardDAO instance = new BoardDAO();
@@ -119,5 +129,71 @@ public class BoardDAO {
 			}
 			//service로 리턴
 			return cnt;
+		}
+		
+		
+		//게시물 Post
+		public void BoardPost(HttpServletRequest res) {
+			Connection conn=null;
+			PreparedStatement pstmt = null;
+			int filesize=0;
+			String filename=null;
+			try {
+				conn=ds.getConnection();
+				
+				
+				//업로드 폴더 생성(미존재시)
+				Session session = req.getSession();
+				MemberVO vo = (MemberVO)session.getAttribute("vo");
+				String email = vo.getEmail();
+				File updir = new File(SAVEFOLDER+File.separator+email);
+				if(updir.exists()==false) {
+					updir.mkdirs();
+				}
+				//파일Part 추출
+				Part part = req.getPart("uploadfile");
+				//파일이름 추출
+				filename=getFilename(part);
+				//파일업로드 할게 있는지 여부 확인
+				if(!filename.equals("")) {
+					
+					//업로드
+					UUID rand = UUID.randomUUID();
+					filename=rand+"_"+filename;
+					part.write(updir+File.separator+filename);
+				}else {
+					filename="파일없음";
+				}
+			
+				//DB에 게시물 저장
+				pstmt=conn.prepareStatement("insert into board_tbl values(null,?,?,?,?,now(),?,0,?,?)");
+				pstmt.setString(1, req.getParameter("email"));
+				pstmt.setString(2, req.getParameter("pwd"));
+				pstmt.setString(3,req.getParameter("subject"));
+				pstmt.setString(4,req.getParameter("content"));
+				pstmt.setString(5,req.getRemoteAddr());
+				pstmt.setString(6, filename);
+				filesize=(int)part.getSize();
+				pstmt.setInt(7,filesize);
+				pstmt.executeUpdate();
+			}catch(Exception e) {
+				
+			}finally {
+				try{pstmt.close();}catch(Exception e1) {}
+				try{conn.close();}catch(Exception e1) {}
+			}
+			
+		}
+		
+		//파일이름 추출 함수
+		private String getFilename(Part part) {
+			System.out.println("----파일이름 추출 함수로 진입----");
+			String contentDisp = part.getHeader("content-disposition");
+			String[] tokens = contentDisp.split(";"); 
+			String filename = tokens[2];
+			filename = filename.substring(11,filename.length()-1);
+			System.out.println("Filename : "+filename);
+			System.out.println("----파일이름 추출 함수 끝----");
+			return filename;
 		}
 }

@@ -6,6 +6,8 @@ import controller.Controller;
 import controller.HttpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import service.BoardService;
+
 
 public class BoardPostController implements Controller{
 
@@ -14,25 +16,17 @@ public class BoardPostController implements Controller{
 	public void Execute(HttpServletRequest req, HttpServletResponse resp) {
 		
 		String flag = req.getParameter("flag"); 
-		if(flag.equals("true"))
+		if(flag.equals("true")) //폼에 아직 입력을 안했을때 (처음접근)
 		{
-			//파라미터 받기
-			String email = req.getParameter("email");
-			String pwd = req.getParameter("pwd");
-			String subject = req.getParameter("subject");
-			String content = req.getParameter("content");
-			//...여기서 파일업로드 처리 
-			String uploadfile = req.getParameter("uploadfile");
-		
-			//입력값검증
-			
-			//서비스실행
-			
 			//View이동
 			HttpUtil.Forward(req, resp, "/WEB-INF/View/board/post.jsp");
 		}
-		else
+		else //폼에 입력 다 한다음 post처리요청
 		{
+			//서비스실행
+			BoardService service = BoardService.getInstance();
+			service.BoardPost(req);
+			
 			try {
 				resp.sendRedirect("/Board/list.do");
 			} catch (IOException e) {

@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import dao.BoardDAO;
 import dao.MemberDAO;
+import jakarta.servlet.http.HttpServletRequest;
 import vo.BoardVO;
 
 public class BoardService {
@@ -15,7 +16,7 @@ public class BoardService {
 	private BoardService() {
 		dao=BoardDAO.getInstance();
 	};
-	public static BoardService getinstance() {
+	public static BoardService getInstance() {
 		if(instance==null) {
 			instance=new BoardService();
 		}
@@ -33,4 +34,12 @@ public class BoardService {
 	public int getTotalCount(){
 		return dao.getTotalCount();
 	}
+	
+	//게시물 Post
+	public void BoardPost(HttpServletRequest req) {
+		dao.BoardPost(req);
+		
+		
+	}
+	
 }

@@ -34,7 +34,7 @@ public class BoardListController implements Controller{
 		
 		
 		//서비스 실행
-		BoardService service = BoardService.getinstance();
+		BoardService service = BoardService.getInstance();
 		Vector<BoardVO> list = service.getBoardList(start, end);
 		int tcnt = service.getTotalCount();
 	
