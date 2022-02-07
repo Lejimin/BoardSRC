@@ -65,6 +65,7 @@ public class BoardDAO {
 						BoardVO vo = new BoardVO(
 							rs.getInt("num"),
 							rs.getString("email"),
+							rs.getString("pwd"),
 							rs.getString("subject"),
 							rs.getString("content"),
 							rs.getString("regdate"),

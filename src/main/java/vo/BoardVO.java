@@ -3,6 +3,7 @@ package vo;
 public class BoardVO {
 	private int num;
 	private String email;
+	private String pwd;
 	private String subject;
 	private String content;
 	private String regdate;
@@ -12,11 +13,12 @@ public class BoardVO {
 	private int filesize;
 		
 	
-	public BoardVO(int num, String email, String subject, String content, String regdate, String ip, int count,
+	public BoardVO(int num, String email, String pwd, String subject, String content, String regdate, String ip, int count,
 			String filename, int filesize) {
 		super();
 		this.num = num;
 		this.email = email;
+		this.pwd = pwd;
 		this.subject = subject;
 		this.content = content;
 		this.regdate = regdate;
@@ -32,6 +34,9 @@ public class BoardVO {
 	}
 	public String getEmail() {
 		return email;
+	}
+	public String getPwd() {
+		return pwd;
 	}
 	public String getSubject() {
 		return subject;
@@ -54,6 +59,9 @@ public class BoardVO {
 	public int getFilesize() {
 		return filesize;
 	}
+
+
+
 
 
 	@Override

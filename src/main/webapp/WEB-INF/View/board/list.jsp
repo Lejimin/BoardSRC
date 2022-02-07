@@ -51,8 +51,8 @@
 <!--페이지 위치정보(브레드크럼 사용~) -->
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item"><a href="#">Board</a></li>
+    <li class="breadcrumb-item"><a href="/Home.do">Home</a></li>
+    <li class="breadcrumb-item"><a href="/Board/list.do">Board</a></li>
     <li class="breadcrumb-item active" aria-current="page">List</li>
   </ol>
 </nav>
@@ -201,7 +201,7 @@
 		%>
 		<!-- 글쓰기/처음으로 버튼 -->
 		<td align="right">
-			<a href="#" class="btn btn-primary">글쓰기</a>
+			<a href="/Board/post.do?flag=true" class="btn btn-primary">글쓰기</a>
 			<a href="javascript:moveFirst()" class="btn btn-primary">처음으로</a>
 		</td>
 	</tr>
