@@ -25,21 +25,26 @@ public class BoardService {
 	
 	
 	
-	//게시물 읽어오기(start, end)
-	public Vector<BoardVO> getBoardList(int start, int end) {
-		return dao.getBoardList(start, end);
-	}
-	
-	//전체 게시물 개수 가져오기
-	public int getTotalCount(){
-		return dao.getTotalCount();
-	}
-	
-	//게시물 Post
-	public void BoardPost(HttpServletRequest req) {
-		dao.BoardPost(req);
+	//게시물 읽어오기(start,end)
+		public Vector<BoardVO> getBoardList(int start, int end){
+			return dao.getBoardList(start,end);
+			
+		}
 		
+		//전체 게시물 개수 가져오기
+		public int getTotalCount() {
+			return dao.getTotalCount();
+		}
 		
-	}
+		//게시물 Post
+		public void BoardPost(HttpServletRequest req) {
+			dao.BoardPost(req);	
+		}
+		
+		//게시물 Read
+		public BoardVO getBoardVO(int num) {
+			return dao.getBoardVO(num);
+			
+		}
 	
 }

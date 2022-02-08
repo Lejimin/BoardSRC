@@ -22,57 +22,238 @@ import vo.MemberVO;
 public class BoardDAO {
 
 	//멤버변수 DataSource 관련 참조변수
-		Context initCtx;
-		Context envCtx;
-		DataSource ds;
+	Context initCtx;
+	Context envCtx;
+	DataSource ds;
+	//멤버변수 SQL 쿼리 관련 참조변수
+	Connection conn;
+	PreparedStatement pstmt;
+	ResultSet rs;
+	//업로드 경로추가
+	private final String SAVEFOLDER = "c:/upload";
 		
-		//멤버변수 SQL 쿼리 관련 참조변수
-		Connection conn;
-		PreparedStatement pstmt;
-		ResultSet rs;
-		//업로드 경로추가
-		private final String SAVEFOLDER = "c:/upload";
+	//싱글톤 패턴 시작
+	private static BoardDAO instance =new BoardDAO();
+	private BoardDAO() {
+		try {
+		initCtx = new InitialContext();
+		envCtx = (Context)initCtx.lookup("java:comp/env");
+		ds = (DataSource)envCtx.lookup("jdbc/MysqlDB");
 		
-		//싱글톤 패턴 시작
-		private static BoardDAO instance = new BoardDAO();
-		private BoardDAO() {
-			try {
-			initCtx = new InitialContext();
-			envCtx = (Context)initCtx.lookup("java:comp/env");
-			ds = (DataSource)envCtx.lookup("jdbc/MysqlDB");
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
-		public static BoardDAO getInstance() {
-			if(instance==null) {
-				instance = new BoardDAO();
-			}
-			return instance;
+	}
+	public static BoardDAO getInstance() {
+		if(instance==null) {
+			instance=new BoardDAO();
 		}
-		//싱글톤 패턴 끝
+		return instance;
+	}
+	//싱글톤 패턴 끝
+	
+	//게시물 읽어오기(start,end)
+	public Vector<BoardVO> getBoardList(int start, int end){
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs=null;
 		
-		//게시물 읽어오기(start,end)
-		public Vector<BoardVO> getBoardList(int start, int end){
+		Vector<BoardVO> list = new Vector();
+		
+		try {
+			conn=ds.getConnection();
+			pstmt=conn.prepareStatement("select * from board_tbl order by num desc limit ?,?");
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			rs = pstmt.executeQuery();
 			
-			Connection conn=null;
-			PreparedStatement pstmt=null;
-			ResultSet rs=null;
-
-			Vector<BoardVO> list = new Vector();
+			if(rs!=null) {
+				while(rs.next()) {
+					//읽어온 테이블 각행의 값을 BoardVO로 저장
+					BoardVO vo = new BoardVO(
+						rs.getInt("num"),
+						rs.getString("email"),
+						rs.getString("pwd"),
+						rs.getString("subject"),
+						rs.getString("content"),
+						rs.getString("regdate"),
+						rs.getString("ip"),
+						rs.getInt("count"),
+						rs.getString("filename"),
+						rs.getInt("filesize")
+					);
+					//리스트에 넣기
+					list.add(vo);
+				}	
+			}	
 			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try{rs.close();}catch(Exception e) {}
+			try{pstmt.close();}catch(Exception e) {}
+			try{conn.close();}catch(Exception e) {}	
+		}
+		
+		return list;
+		
+	}
+	
+	
+	//전체 게시물 개수 받아오기()
+	public int getTotalCount()
+	{
+			
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs=null;
+		
+			int cnt=0;
 			try {
 				conn=ds.getConnection();
-				pstmt=conn.prepareStatement("select * from board_tbl order by num desc limit ?,?");
-				pstmt.setInt(1, start);
-				pstmt.setInt(2, end);
+				pstmt=conn.prepareStatement("select count(*) from board_tbl");
 				rs = pstmt.executeQuery();
 				
 				if(rs!=null) {
 					while(rs.next()) {
-						//읽어온 테이블 각행의 값을 BoardVO로 저장
-						BoardVO vo = new BoardVO(
+						cnt=rs.getInt(1);
+					}	
+				}	
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				try{rs.close();}catch(Exception e) {}
+				try{pstmt.close();}catch(Exception e) {}
+				try{conn.close();}catch(Exception e) {}	
+			}
+			
+			return cnt;
+			
+		}
+	
+	//게시물 Post
+	public void BoardPost(HttpServletRequest req) {
+		Connection conn=null;
+		PreparedStatement pstmt = null;
+		int filesize=0;
+		String filename=null;
+		try {
+			
+			conn=ds.getConnection();
+			
+			//업로드 폴더 생성(미존재시)
+			HttpSession session =req.getSession(); 
+			MemberVO vo = (MemberVO)session.getAttribute("vo");
+			String email = vo.getEmail();
+			File updir = new File(SAVEFOLDER+File.separator+email);
+			if(updir.exists()==false) {
+				updir.mkdirs();
+			}
+			//파일Part 추출
+			Part part = req.getPart("uploadfile");
+			//파일이름 추출
+			filename=getFilename(part);
+			//파일업로드 할게 있는지 여부 확인
+			if(!filename.equals(""))
+			{
+				//업로드
+				part.write(updir+File.separator+filename);
+				
+				
+			}else {
+				filename="파일없음";
+			}
+			
+			//DB에 게시물 저장
+			
+			pstmt=conn.prepareStatement("insert into board_tbl values(null,?,?,?,?,now(),?,0,?,?)");
+			pstmt.setString(1, vo.getEmail());
+			pstmt.setString(2, req.getParameter("pwd"));
+			pstmt.setString(3, req.getParameter("subject"));
+			pstmt.setString(4, req.getParameter("content"));
+			pstmt.setString(5, req.getRemoteAddr());
+			pstmt.setString(6, filename);
+			filesize=(int)part.getSize();
+			pstmt.setInt(7, filesize);
+			pstmt.executeUpdate();
+			
+		
+		}catch(Exception e) {
+			
+		}finally {
+			try{pstmt.close();}catch(Exception e1) {}
+			try{conn.close();}catch(Exception e1) {}
+		}
+		
+	}
+	
+	//파일이름 추출 함수
+	private String getFilename(Part part) {
+		System.out.println("----파일이름 추출 함수로 진입----");
+		String contentDisp = part.getHeader("content-disposition");
+		String[] tokens = contentDisp.split(";"); 
+		String filename = tokens[2];
+		
+		//확장자 추출하기
+		int idx=filename.lastIndexOf(".");	//. 위치 찾기
+		String tmp = filename.substring(idx,filename.length()-1);
+		System.out.println("파일확장자 : " + tmp);
+		
+		//UUID
+		UUID rand = UUID.randomUUID();
+		//파일명_UUID.확장자
+		
+		//파일이름(확장자명 제외)
+		filename = filename.substring(11,idx);
+		System.out.println("Filename : "+filename);
+		System.out.println("----파일이름 추출 함수 끝----");
+		return filename+"_"+rand+tmp;
+	}
+	
+	//게시물 UpCount 조회수 증가
+	public void UpCount(int num) {
+		Connection conn=null;
+		PreparedStatement pstmt = null;
+		
+		
+		try {
+			
+			conn=ds.getConnection();
+			pstmt=conn.prepareStatement("update board_tbl set count=count+1 where num=?");
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try{pstmt.close();}catch(Exception e) {}
+			try{conn.close();}catch(Exception e) {}
+			
+		}
+		
+	}
+	
+	//게시물 Read
+	public BoardVO getBoardVO(int num) {
+		
+		//카운트 증가
+		UpCount(num);
+		
+		Connection conn=null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		BoardVO vo = null;
+		try {
+			conn=ds.getConnection();
+			pstmt = conn.prepareStatement("select * from board_tbl where num=?");
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+		
+			if(rs!=null) {
+				while(rs.next()) {
+					vo = new BoardVO(
 							rs.getInt("num"),
 							rs.getString("email"),
 							rs.getString("pwd"),
@@ -83,117 +264,22 @@ public class BoardDAO {
 							rs.getInt("count"),
 							rs.getString("filename"),
 							rs.getInt("filesize")
-						);
-						//리스트에 넣기
-						list.add(vo);
-					}
+							);
 				}
-				
-			}catch(Exception e) {
-				e.printStackTrace();
-			}finally {
-				try{rs.close();}catch(Exception e) {}
-				try{pstmt.close();}catch(Exception e) {}
-				try{conn.close();}catch(Exception e) {}
-			}
-			//service로 리턴
-			return list;
-		}
-		
-		
-		
-		//전체 게시물 개수 받아오기()
-		public int getTotalCount(){
-			
-			Connection conn=null;
-			PreparedStatement pstmt=null;
-			ResultSet rs=null;
-			int cnt=0;
-			try {
-				conn=ds.getConnection();
-				pstmt=conn.prepareStatement("select count(*) from board_tbl ");  //count(*) = 1000개
-				rs = pstmt.executeQuery();
-				
-				if(rs!=null) {
-					while(rs.next()) {
-						cnt=rs.getInt(1);
-					}
-				}
-				
-			}catch(Exception e) {
-				e.printStackTrace();
-			}finally {
-				try{rs.close();}catch(Exception e) {}
-				try{pstmt.close();}catch(Exception e) {}
-				try{conn.close();}catch(Exception e) {}
-			}
-			//service로 리턴
-			return cnt;
-		}
-		
-		
-		//게시물 Post
-		public void BoardPost(HttpServletRequest req) {
-			Connection conn=null;
-			PreparedStatement pstmt = null;
-			int filesize=0;
-			String filename=null;
-			try {
-				conn=ds.getConnection();
-				
-				
-				//업로드 폴더 생성(미존재시)
-				HttpSession session = req.getSession();
-				MemberVO vo = (MemberVO)session.getAttribute("vo");
-				String email = vo.getEmail();
-				File updir = new File(SAVEFOLDER+File.separator+email);
-				if(updir.exists()==false) {
-					updir.mkdirs();
-				}
-				//파일Part 추출
-				Part part = req.getPart("uploadfile");
-				//파일이름 추출
-				filename=getFilename(part);
-				//파일업로드 할게 있는지 여부 확인
-				if(!filename.equals("")) {
-					
-					//업로드
-					UUID rand = UUID.randomUUID();
-					filename=rand+"_"+filename;
-					part.write(updir+File.separator+filename);
-				}else {
-					filename="파일없음";
-				}
-			
-				//DB에 게시물 저장
-				pstmt=conn.prepareStatement("insert into board_tbl values(null,?,?,?,?,now(),?,0,?,?)");
-				pstmt.setString(1, req.getParameter("email"));
-				pstmt.setString(2, req.getParameter("pwd"));
-				pstmt.setString(3,req.getParameter("subject"));
-				pstmt.setString(4,req.getParameter("content"));
-				pstmt.setString(5,req.getRemoteAddr());
-				pstmt.setString(6, filename);
-				filesize=(int)part.getSize();
-				pstmt.setInt(7,filesize);
-				pstmt.executeUpdate();
-			}catch(Exception e) {
-				
-			}finally {
-				try{pstmt.close();}catch(Exception e1) {}
-				try{conn.close();}catch(Exception e1) {}
 			}
 			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try{rs.close();}catch(Exception e1) {}
+			try{pstmt.close();}catch(Exception e1) {}
+			try{conn.close();}catch(Exception e1) {}
 		}
 		
-		//파일이름 추출 함수
-		private String getFilename(Part part) {
-			System.out.println("----파일이름 추출 함수로 진입----");
-			String contentDisp = part.getHeader("content-disposition");
-			String[] tokens = contentDisp.split(";"); 
-			String filename = tokens[2];
-			filename = filename.substring(11,filename.length()-1);
-			System.out.println("Filename : "+filename);
-			System.out.println("----파일이름 추출 함수 끝----");
-			return filename;
-		}
+		return vo;
+	}
+	
+	
+	
+	
 }

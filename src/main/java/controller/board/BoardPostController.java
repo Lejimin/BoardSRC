@@ -11,21 +11,25 @@ import service.BoardService;
 
 public class BoardPostController implements Controller{
 
-	//강제 재정의
+
 	@Override
 	public void Execute(HttpServletRequest req, HttpServletResponse resp) {
 		
 		String flag = req.getParameter("flag"); 
-		if(flag.equals("true")) //폼에 아직 입력을 안했을때 (처음접근)
+		if(flag.equals("true")) //폼에 아직 입력을 안했을떄(처음접근)
 		{
 			//View이동
 			HttpUtil.Forward(req, resp, "/WEB-INF/View/board/post.jsp");
+		
 		}
-		else //폼에 입력 다 한다음 post처리요청
-		{
+		else //폼에 입력다 한다음 Post처리요청
+		{		
+			//입력값검증
+			
 			//서비스실행
 			BoardService service = BoardService.getInstance();
 			service.BoardPost(req);
+			
 			
 			try {
 				resp.sendRedirect("/Board/list.do");
@@ -33,6 +37,7 @@ public class BoardPostController implements Controller{
 				e.printStackTrace();
 			}
 		}
+	
 		
 	}
 

@@ -88,7 +88,7 @@
 		%>
 			<tr>
 				<td><%=list.get(i).getNum() %></td>
-				<td><%=list.get(i).getSubject() %></td>
+				<td><a href="javascript:read('<%=list.get(i).getNum()%>')"><%=list.get(i).getSubject() %></a></td>
 				<td><%=list.get(i).getEmail() %></td>
 				<td><%=list.get(i).getRegdate() %></td>
 				<td><%=list.get(i).getCount() %></td>
@@ -131,6 +131,14 @@
 		document.readForm.action="/Board/list.do";
 		document.readForm.submit();
 	}
+	
+	function read(num){
+		document.readForm.num.value=num;
+		document.readForm.nowPage.value='<%=nowPage%>';
+		document.readForm.action="/Board/read.do";
+		document.readForm.submit();
+	}
+	
 </script>
 
 <!-- 페이지관련 정보 전달Form -->
