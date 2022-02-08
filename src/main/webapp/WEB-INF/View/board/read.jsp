@@ -33,6 +33,9 @@
 <%
 	BoardVO vo = (BoardVO)session.getAttribute("BoardVO");
 	String nowPage = (String)request.getAttribute("nowPage");
+	int start = (int)request.getAttribute("start");
+	int end = (int)request.getAttribute("end");
+	
 %>
 
 <h2 class="mb-4">글내용</h2>
@@ -59,7 +62,7 @@
 	</tr>
 	<tr>
 		<td colspan="4">
-		<a href="javascript:history.go(-1)" class="btn btn-primary">LIST</a>&nbsp;
+		<a href="/Board/list.do?nowPage=<%=nowPage %>&start=<%=start %>&end=<%=end %>" class="btn btn-primary">LIST</a>&nbsp;
 		<a href="#" class="btn btn-primary">UPDATE</a>&nbsp;
 		<a href="#" class="btn btn-primary">DELETE</a>&nbsp;
 		</td>

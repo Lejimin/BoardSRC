@@ -135,6 +135,10 @@
 	function read(num){
 		document.readForm.num.value=num;
 		document.readForm.nowPage.value='<%=nowPage%>';
+		var numPerPage=<%=numPerPage %>
+		var page=<%=nowPage%>
+		document.readForm.start.value=(page*numPerPage)-numPerPage;
+		document.readForm.end.value=numPerPage;
 		document.readForm.action="/Board/read.do";
 		document.readForm.submit();
 	}

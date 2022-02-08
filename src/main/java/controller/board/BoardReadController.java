@@ -16,6 +16,8 @@ public class BoardReadController implements Controller{
 		//파라미터 받기
 		int num = Integer.parseInt(req.getParameter("num"));
 		String nowPage = req.getParameter("nowPage");
+		int start = Integer.parseInt(req.getParameter("start"));
+		int end = Integer.parseInt(req.getParameter("end"));
 		
 		//입력값 검증
 		
@@ -28,6 +30,8 @@ public class BoardReadController implements Controller{
 		HttpSession session = req.getSession();
 		session.setAttribute("BoardVO", vo);
 		req.setAttribute("nowPage", nowPage);
+		req.setAttribute("start", start);
+		req.setAttribute("end", end);
 		HttpUtil.Forward(req, resp, "/WEB-INF/View/board/read.jsp");
 		
 	}
