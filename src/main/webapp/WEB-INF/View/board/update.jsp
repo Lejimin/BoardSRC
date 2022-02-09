@@ -22,8 +22,8 @@
 <!-- 페이지 위치정보(브레드크럼 사용) -->
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item"><a href="#">Board</a></li>
+    <li class="breadcrumb-item"><a href="/Home.do">Home</a></li>
+    <li class="breadcrumb-item"><a href="/Board/list.do">Board</a></li>
     <li class="breadcrumb-item active" aria-current="page">Update</li>
   </ol>
 </nav>
