@@ -17,7 +17,7 @@ public class MemberSearchController implements Controller{
 		
 		//2. vo를 지정된 페이지로 전달
 		req.setAttribute("vo", vo);
-		HttpUtil.Forward(req, resp, "/WEB-INF/View/MemberSearchResult.jsp");
+		HttpUtil.Forward(req, resp, "/WEB-INF/View/member/MemberSearchResult.jsp");
 	}
 
 }

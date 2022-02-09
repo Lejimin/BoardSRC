@@ -2,11 +2,21 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+<!-- 링크경로(Head포함) -->
+<%@include file="../../module/link.jsp" %>
+
+
 <body>
+
+<div class="container-fluid">
+<!-- meta_Header -->
+<%@include file="../../module/meta_header.jsp" %>
+<!-- header -->
+<%@include file="../../module/header.jsp" %>
+<!-- nav -->
+<%@include file="../../module/nav.jsp" %>
+</div>
+
 <h1>정보 조회 페이지</h1>
 <%@page import="vo.*" %>
 <%
