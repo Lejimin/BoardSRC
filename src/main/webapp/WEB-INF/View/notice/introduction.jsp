@@ -20,6 +20,11 @@
 
 
 <h2>회사소개</h2>
+<table>
+	<tr>
+		<td>소개~~~~</td>
+	</tr>
+</table>
 
 </body>
 </html>

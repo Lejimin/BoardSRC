@@ -51,5 +51,10 @@ public class BoardService {
 		public void BoardUpdate(BoardVO vo) {
 			dao.BoardUpdate(vo);
 		}
+		
+		//게시물 delete
+		public void BoardDelete(int num) {
+			dao.BoardDelete(num);
+		}
 	
 }

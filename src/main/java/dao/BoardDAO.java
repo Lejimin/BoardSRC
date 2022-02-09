@@ -300,7 +300,48 @@ public class BoardDAO {
 	}
 	
 	
-	
+	//게시물 삭제
+	public void BoardDelete(int num) {
+		Connection conn=null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn=ds.getConnection();
+			//파일이름 조회해서 해당 파일 삭제
+			pstmt=conn.prepareStatement("select email,filename from board_tbl where num=?");
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			String email=null;
+			String filename=null;
+			if(rs!=null)
+			{
+				while(rs.next()) {
+					email=rs.getString("email");
+					filename=rs.getString("filename");
+				}
+			}
+			
+			if(!filename.equals("NONE")) {
+				File file = new File(SAVEFOLDER+File.separator+email+File.separator+filename);
+				if(file.exists()) {
+					file.delete();
+				}
+			}
+			//게시물삭제
+			pstmt=conn.prepareStatement("delete from board_tbl where num=?");
+			pstmt.setInt(1,num);
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try{rs.close();}catch(Exception e) {}
+			try{pstmt.close();}catch(Exception e) {}
+			try{conn.close();}catch(Exception e) {}
+		}
+		
+		
+	}
 	
 	
 	

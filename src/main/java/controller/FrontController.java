@@ -6,6 +6,7 @@ import java.util.Map;
 
 import controller.auth.LoginProcController;
 import controller.auth.LogoutProcController;
+import controller.board.BoardDeleteController;
 import controller.board.BoardDeleteReqController;
 import controller.board.BoardListController;
 import controller.board.BoardPostController;
@@ -62,6 +63,8 @@ public class FrontController extends HttpServlet{
 		list.put("/Board/update.do", new BoardUpdateController());
 		list.put("/Board/updateReq.do",  new BoardUpdateReqController());
 		list.put("/Board/deleteReq.do", new BoardDeleteReqController());
+		list.put("/Board/delete.do", new BoardDeleteController());
+
 		
 		//notice관련 URL
 		list.put("/Notice/list.do", new NoticeListController());

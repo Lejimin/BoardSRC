@@ -36,6 +36,8 @@ public class BoardVO {
 		this.content = content;
 	}
 
+	
+	
 
 	public int getNum() {
 		return num;
