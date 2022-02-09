@@ -68,6 +68,9 @@
 		</td>
 	</tr>
 </table>
+	<input type="hidden" name=nowPage value="<%=request.getParameter("nowPage") %>">
+	<input type="hidden" name=start value="<%=request.getParameter("start") %>">
+	<input type="hidden" name=end value="<%=request.getParameter("end") %>">
 </form>
 <!--page-contents 끝  -->
 </div>

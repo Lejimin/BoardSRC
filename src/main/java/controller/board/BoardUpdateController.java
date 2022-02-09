@@ -41,7 +41,12 @@ public class BoardUpdateController implements Controller{
 			
 			//이동(읽고있는 페이지로 이동~)
 			try {
-				resp.sendRedirect("/Board/list.do");
+				int num = boardvo.getNum();
+				String nowPage = req.getParameter("nowPage");
+				String start = req.getParameter("start");
+				String end = req.getParameter("end");
+				String url = "/Board/read.do?nowPage="+nowPage+"&start="+start+"&end="+end+"&num="+num;
+				resp.sendRedirect(url);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
