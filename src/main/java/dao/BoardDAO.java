@@ -280,6 +280,28 @@ public class BoardDAO {
 	}
 	
 	
+	//게시물 Update
+	public void BoardUpdate(BoardVO vo) {
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		try {
+			conn = ds.getConnection();
+			pstmt =conn.prepareStatement("update board_tbl set subject=?,content=? where num=?");
+			pstmt.setString(1,vo.getSubject());
+			pstmt.setString(2,vo.getContent());
+			pstmt.setInt(3, vo.getNum());
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			try{pstmt.close();}catch(Exception e1) {}
+			try{conn.close();}catch(Exception e1) {}
+			
+		}		
+	}
+	
+	
+	
+	
 	
 	
 }

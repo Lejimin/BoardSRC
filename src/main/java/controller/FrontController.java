@@ -9,6 +9,8 @@ import controller.auth.LogoutProcController;
 import controller.board.BoardListController;
 import controller.board.BoardPostController;
 import controller.board.BoardReadController;
+import controller.board.BoardUpdateController;
+import controller.board.BoardUpdateReqController;
 import controller.home.HomeForwardingController;
 import controller.member.MemberDeleteController;
 import controller.member.MemberJoinController;
@@ -54,6 +56,8 @@ public class FrontController extends HttpServlet{
 		list.put("/Board/list.do", new BoardListController());
 		list.put("/Board/post.do", new BoardPostController());
 		list.put("/Board/read.do", new BoardReadController());
+		list.put("/Board/update.do", new BoardUpdateController());
+		list.put("/Board/updateReq.do",  new BoardUpdateReqController());
 		
 		//notice관련 URL
 		list.put("/Notice/list.do", new NoticeListController());

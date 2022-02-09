@@ -38,6 +38,18 @@
 	
 %>
 
+<%
+	String MSG = (String)request.getAttribute("MSG");
+	if(MSG!=null)
+	{
+%>
+	<script>
+		alert('<%=MSG%>');
+	</script>
+<%
+	}
+%>
+
 <h2 class="mb-4">글내용</h2>
 <table class="table w-75">
 	<tr>
@@ -62,8 +74,8 @@
 	</tr>
 	<tr>
 		<td colspan="4">
-		<a href="/Board/list.do?nowPage=<%=nowPage %>&start=<%=start %>&end=<%=end %>" class="btn btn-primary">LIST</a>&nbsp;
-		<a href="#" class="btn btn-primary">UPDATE</a>&nbsp;
+		<a href="/Board/list.do?nowPage=<%=nowPage %>&start=<%=start %>&end=<%=end%>" class="btn btn-primary">LIST</a>&nbsp;
+		<a href="/Board/updateReq.do?nowPage=<%=nowPage %>&start=<%=start %>&end=<%=end%>&flag=init" class="btn btn-primary">UPDATE</a>&nbsp;
 		<a href="#" class="btn btn-primary">DELETE</a>&nbsp;
 		</td>
 	</tr>

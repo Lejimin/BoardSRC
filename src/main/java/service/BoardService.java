@@ -46,5 +46,10 @@ public class BoardService {
 			return dao.getBoardVO(num);
 			
 		}
+		
+		//게시물 update
+		public void BoardUpdate(BoardVO vo) {
+			dao.BoardUpdate(vo);
+		}
 	
 }
