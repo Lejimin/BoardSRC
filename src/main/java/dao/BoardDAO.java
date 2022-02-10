@@ -30,7 +30,7 @@ public class BoardDAO {
 	PreparedStatement pstmt;
 	ResultSet rs;
 	//업로드 경로추가
-	private final String SAVEFOLDER = "c:/upload";
+	public static final String SAVEFOLDER = "c:/upload";
 		
 	//싱글톤 패턴 시작
 	private static BoardDAO instance =new BoardDAO();

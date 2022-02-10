@@ -8,6 +8,7 @@ import controller.auth.LoginProcController;
 import controller.auth.LogoutProcController;
 import controller.board.BoardDeleteController;
 import controller.board.BoardDeleteReqController;
+import controller.board.BoardDownloadController;
 import controller.board.BoardListController;
 import controller.board.BoardPostController;
 import controller.board.BoardReadController;
@@ -64,6 +65,7 @@ public class FrontController extends HttpServlet{
 		list.put("/Board/updateReq.do",  new BoardUpdateReqController());
 		list.put("/Board/deleteReq.do", new BoardDeleteReqController());
 		list.put("/Board/delete.do", new BoardDeleteController());
+		list.put("/Board/download.do", new BoardDownloadController());
 
 		
 		//notice관련 URL
