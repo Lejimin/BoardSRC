@@ -74,7 +74,7 @@ public class BoardService {
 			HttpSession session = req.getSession();
 			BoardVO vo = (BoardVO)session.getAttribute("BoardVO");
 			String filename = vo.getFilename();
-			String filepath = savedir+File.separator+filename;
+			String filepath = savedir+File.separator+vo.getEmail() + File.separator+filename;
 			
 			
 			//한글 인코딩
