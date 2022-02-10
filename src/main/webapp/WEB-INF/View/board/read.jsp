@@ -64,7 +64,7 @@
 	</tr>
 	<tr>
 		<th>첨부파일</th>
-		<td colspan="3"><%=vo.getFilename() %> (<%=vo.getFilesize() %> byte)</td>
+		<td colspan="3"><a href="#"><%=vo.getFilename() %></a> (<%=vo.getFilesize()/1024 %> Kbyte)</td>
 	</tr>
 	<tr>
 		<td colspan="4" style="height:250px;"><textarea rows=10 cols=50 class="form-control"><%=vo.getContent() %></textarea></td>

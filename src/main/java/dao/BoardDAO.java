@@ -156,7 +156,7 @@ public class BoardDAO {
 			//파일이름 추출
 			filename=getFilename(part);
 			//파일업로드 할게 있는지 여부 확인
-			if(!filename.equals(""))
+			if(filename!=null)
 			{
 				//업로드
 				part.write(updir+File.separator+filename);
@@ -196,6 +196,12 @@ public class BoardDAO {
 		String[] tokens = contentDisp.split(";"); 
 		String filename = tokens[2];
 		
+		System.out.println(filename);
+		
+		if(filename.equals(" filename=\"\"")) {
+			return null;
+		}else
+		{
 		//확장자 추출하기
 		int idx=filename.lastIndexOf(".");	//. 위치 찾기
 		String tmp = filename.substring(idx,filename.length()-1);
@@ -210,8 +216,8 @@ public class BoardDAO {
 		System.out.println("Filename : "+filename);
 		System.out.println("----파일이름 추출 함수 끝----");
 		return filename+"_"+rand+tmp;
+		}
 	}
-	
 	//게시물 UpCount 조회수 증가
 	public void UpCount(int num) {
 		Connection conn=null;
