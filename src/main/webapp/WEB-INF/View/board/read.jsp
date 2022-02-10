@@ -95,8 +95,35 @@
 </table>
 <!-- page content 끝 -->
 </div>
+
+<!-- Reply -->
+<h3  class="p-3">Comment</h3>
+<div class="w-75 p-3" style="background-color:#f1f2f1;height:500px;overflow:auto;" >
+	
+	<form>
+		<textarea row="3" class="form-control"></textarea>
+	</form>
+	
+	<div class="row m-4">
+		<div class="col-1"  ><img style="width:47px;height:47px; margin-top:7px; border-radius:25%;" src="/resources/img/person-circle.svg"></div>
+		<div class="col-11" >
+			<div style="font-weight:500;font-size:20px;margin-bottom:5px;">aaaa@naver.com</div>
+			<div>댓글내용--~~</div>
+		</div>
+	</div>
+	<div class="row m-4">
+		<div class="col-1"  ><img style="width:47px;height:47px; margin-top:7px;border-radius:25%;" src="/resources/img/person-circle.svg"></div>
+		<div class="col-11" >
+			<div style="font-weight:500;font-size:20px;margin-bottom:5px;">aaaa@naver.com</div>
+			<div>댓글내용--~~</div>
+		</div>
+	</div>
+</div>
+
 <!-- container-fluid 끝 -->
 </div>
+
+
 
 </body>
 </html>
