@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vo.BoardVO;
+import vo.ReplyVO;
 
 public class BoardService {
 	
@@ -114,5 +115,17 @@ public class BoardService {
 			}
 		}
 
+		
+		
+		//댓글달기
+		public void ReplyPost(ReplyVO vo) {
+			dao.ReplyPost(vo);
+		}
+		
+		
+		//게시물 댓글 가져오기
+		public Vector<ReplyVO> getReplyList(int num){
+			return dao.getReplyList(num);
+		}
 		
 }

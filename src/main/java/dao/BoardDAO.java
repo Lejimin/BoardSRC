@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import vo.BoardVO;
 import vo.MemberVO;
+import vo.ReplyVO;
 
 public class BoardDAO {
 
@@ -348,6 +349,73 @@ public class BoardDAO {
 		
 		
 	}
+	
+	
+	//댓글
+	public void ReplyPost(ReplyVO vo) {
+		
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		
+		try {
+			conn=ds.getConnection();
+			pstmt=conn.prepareStatement("insert into reply_tbl values(null,?,?,?,now())");
+			pstmt.setInt(1, vo.getBnum());
+			pstmt.setString(2, vo.getWriter());
+			pstmt.setString(3,  vo.getComment());
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try{pstmt.close();}catch(Exception e) {}
+			try{conn.close();}catch(Exception e) {}
+		}
+	}
+	
+	
+	
+	
+	public Vector<ReplyVO> getReplyList(int num){
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs = null;
+		Vector<ReplyVO> list = new Vector();
+		ReplyVO vo =null;
+		
+		
+		try {
+			conn=ds.getConnection();
+			pstmt=conn.prepareStatement("select * from reply_tbl  where b_num=? order by r_num desc");
+			pstmt.setInt(1, num);
+			rs=pstmt.executeQuery();
+			if(rs!=null) {
+				while(rs.next()) {
+					vo = new ReplyVO(
+							rs.getInt("b_num"),
+							rs.getString("writer"),
+							rs.getString("comment"),
+							rs.getString("reg_date")
+							);
+					list.add(vo);
+				}
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try{pstmt.close();}catch(Exception e) {}
+			try{conn.close();}catch(Exception e) {}
+			try{rs.close();}catch(Exception e) {}
+		}
+		return list;
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

@@ -12,6 +12,8 @@ import controller.board.BoardDownloadController;
 import controller.board.BoardListController;
 import controller.board.BoardPostController;
 import controller.board.BoardReadController;
+import controller.board.BoardReplylistController;
+import controller.board.BoardReplypostController;
 import controller.board.BoardUpdateController;
 import controller.board.BoardUpdateReqController;
 import controller.home.HomeForwardingController;
@@ -66,7 +68,8 @@ public class FrontController extends HttpServlet{
 		list.put("/Board/deleteReq.do", new BoardDeleteReqController());
 		list.put("/Board/delete.do", new BoardDeleteController());
 		list.put("/Board/download.do", new BoardDownloadController());
-
+		list.put("/Board/replypost.do", new BoardReplypostController());
+		list.put("/Board/replylist.do", new BoardReplylistController());
 		
 		//notice관련 URL
 		list.put("/Notice/list.do", new NoticeListController());

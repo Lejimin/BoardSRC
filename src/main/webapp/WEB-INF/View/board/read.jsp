@@ -97,27 +97,60 @@
 </div>
 
 <!-- Reply -->
+<script>
+	function postreply(){
+		$.ajax({
+			url:'/Board/replypost.do',
+			type:'GET',
+			datatype:'html',
+			data:{'comment':$('#comment').val()},
+			success:function(result){
+				listreply();	//댓글쓰고난다음 댓글포함한 내용 가져오기
+			},
+			error:function(){
+				alert("문제발생!");
+			}
+		});
+		
+	}
+	
+	function listreply(){
+		$.ajax({
+			url:'/Board/replylist.do',
+			type:'GET',
+			datatype:'html',
+			success:function(result){
+				$('#replydiv').empty(); //기존 댓글리스트 삭제 (항상 모든 댓글읽어오기 때문에 삭제하고 전체를 받아와야함)
+				$('#replydiv').append(result);
+				$('#comment').val('');
+			},
+			error:function(){
+				alert("문제발생!");	
+			}
+		});
+	}
+	listreply();
+</script>
+
 <h3  class="p-3">Comment</h3>
 <div class="w-75 p-3" style="background-color:#f1f2f1;height:500px;overflow:auto;" >
 	
-	<form>
-		<textarea row="3" class="form-control"></textarea>
-	</form>
 	
-	<div class="row m-4">
-		<div class="col-1"  ><img style="width:47px;height:47px; margin-top:7px; border-radius:25%;" src="/resources/img/person-circle.svg"></div>
-		<div class="col-11" >
-			<div style="font-weight:500;font-size:20px;margin-bottom:5px;">aaaa@naver.com</div>
-			<div>댓글내용--~~</div>
+	<div class="row">
+		<div class="col-11">
+				<textarea row="3" class="form-control" id="comment"></textarea>
+		</div>
+		<div class="col-1">
+			<button class="btn btn-secondary w-100 h-100" onclick="postreply()">SEND</button>
 		</div>
 	</div>
-	<div class="row m-4">
-		<div class="col-1"  ><img style="width:47px;height:47px; margin-top:7px;border-radius:25%;" src="/resources/img/person-circle.svg"></div>
-		<div class="col-11" >
-			<div style="font-weight:500;font-size:20px;margin-bottom:5px;">aaaa@naver.com</div>
-			<div>댓글내용--~~</div>
-		</div>
+	
+	<div id=replydiv>
+	
 	</div>
+	
+	<!-- 댓글리스트 표시 위치 -->
+	
 </div>
 
 <!-- container-fluid 끝 -->
